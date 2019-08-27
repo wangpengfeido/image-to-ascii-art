@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="../../dist/remainder-time-formatter.js"></script>
+    <script>
+      var test = RemainderTimeFormatter({
+        date: new Date('2018-08-09'),
+        relativeDate: new Date(),
+        config: [
+          {
+            render(formatter) {
+              return `${formatter.YYYY}`;
+            },
+          },
+        ],
+      }).getResult();
+    </script>
+  </body>
+</html>
