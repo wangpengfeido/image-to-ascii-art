@@ -1,7 +1,7 @@
 const path = require('path');
 module.exports = {
   entry: {
-    'remainder-time-formatter': './src/image-to-ascii-art.ts',
+    'image-to-ascii-art': './src/image-to-ascii-art.ts',
   },
   output: {
     path: path.resolve(__dirname, '../dist'),

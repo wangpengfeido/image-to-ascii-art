@@ -7,19 +7,12 @@
     <title>Document</title>
   </head>
   <body>
-    <script src="../../dist/remainder-time-formatter.js"></script>
+    <pre></pre>
+    <script src="../../dist/image-to-ascii-art.js"></script>
     <script>
-      var test = RemainderTimeFormatter({
-        date: new Date('2018-08-09'),
-        relativeDate: new Date(),
-        config: [
-          {
-            render(formatter) {
-              return `${formatter.YYYY}`;
-            },
-          },
-        ],
-      }).getResult();
+      new ImageToAsciiArt().transform('./test2.png').then(result => {
+        document.querySelector('pre').innerHTML = result;
+      });
     </script>
   </body>
 </html>
