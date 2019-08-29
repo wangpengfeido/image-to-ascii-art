@@ -10,7 +10,7 @@
     <pre></pre>
     <script src="../../dist/image-to-ascii-art.js"></script>
     <script>
-      new ImageToAsciiArt().transform('./test2.png').then(result => {
+      new ImageToAsciiArt({config:'sdfsdf'}).transform('./test.png').then(result => {
         document.querySelector('pre').innerHTML = result;
       });
     </script>
