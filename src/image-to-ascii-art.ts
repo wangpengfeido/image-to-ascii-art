@@ -1,4 +1,4 @@
-import { Config } from './model';
+import { ConfigInterface, Config } from './model';
 import { rgbToGray, grayToAsciiChar } from './utils';
 
 
@@ -13,7 +13,7 @@ export class ImageToAsciiArt {
    * @param canvas options,the canvas to generate ascii art.If it isn't passed,a hidden canvas will be append to body automatically.
    * @param config configuration
    */
-  private constructor({ canvas, config = {} }: { canvas?: HTMLCanvasElement; config?: Config } = {}) {
+  private constructor({ canvas, config = {} }: { canvas?: HTMLCanvasElement; config?: ConfigInterface } = {}) {
     if (canvas instanceof HTMLCanvasElement) {
       this.canvas = canvas;
       this.canvasIsStable = true;
@@ -23,10 +23,11 @@ export class ImageToAsciiArt {
     }
     this.canvasCtx = this.canvas.getContext('2d');
 
+    this.setConfig(config);
   }
 
   public setConfig(config?: Config) {
-    this.config = config
+    this.config = new Config(config);
   }
 
   /**

@@ -1,8 +1,10 @@
-export function rgbToGray(r, g, b) {
+import { GreyRangeChar } from './model.js';
+
+export function rgbToGray(r: number, g: number, b: number): number {
   return 0.299 * r + 0.587 * g + 0.114 * b;
 }
 
-export function grayToAsciiChar(gray) {
+export function grayToAsciiChar(gray: number, greyRangeChar: GreyRangeChar[], defaultChar: string): string {
   if (gray <= 30) {
     return '#';
   } else if (gray > 30 && gray <= 60) {
