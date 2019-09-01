@@ -13,7 +13,7 @@
     "url": "git+https://github.com/wangpengfeido/image-to-ascii-art.git"
   },
   "author": "wangpengfeido@126.com",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/wangpengfeido/image-to-ascii-art/issues"
   },
