@@ -1,9 +1,9 @@
 # image-to-ascii-art
 
 ## Introduction
-Image-to-ascii-art can convert image to ascii art.Look at the picture below to see the effect.
+Image-to-ascii-art can convert image to ascii art.Look at the image below to see the effect.You can download the image and see the detail.
 
-![effect](./doc/img/readme_effect.jpg)
+![effect](https://raw.githubusercontent.com/wangpengfeido/image-to-ascii-art/master/doc/img/readme_effect.jpg)
 
 **It convert by canvas,so you just can only use it in browser.**
 
