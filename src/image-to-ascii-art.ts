@@ -1,6 +1,5 @@
 import { ConfigInterface, Config } from './model';
-import { rgbToGray, grayToAsciiChar } from './utils';
-
+import { rgbToGray, grayToAsciiString } from './utils';
 
 export class ImageToAsciiArt {
   private canvas: HTMLCanvasElement;
@@ -10,7 +9,7 @@ export class ImageToAsciiArt {
   private config: Config;
 
   /**
-   * @param canvas options,the canvas to generate ascii art.If it isn't passed,a hidden canvas will be append to body automatically.
+   * @param canvas optional,the canvas used to generate ascii art.If it isn't passed,a hidden canvas will be append to body automatically.
    * @param config configuration
    */
   private constructor({ canvas, config = {} }: { canvas?: HTMLCanvasElement; config?: ConfigInterface } = {}) {
@@ -19,6 +18,7 @@ export class ImageToAsciiArt {
       this.canvasIsStable = true;
     } else {
       this.canvas = document.createElement('canvas');
+      this.canvas.style.display = 'none';
       document.body.appendChild(this.canvas);
     }
     this.canvasCtx = this.canvas.getContext('2d');
@@ -26,15 +26,15 @@ export class ImageToAsciiArt {
     this.setConfig(config);
   }
 
-  public setConfig(config?: Config) {
+  public setConfig(config?: ConfigInterface): void {
     this.config = new Config(config);
   }
 
   /**
-   * transform an image to an ascii art
+   * convert an image to an ascii art
    * @param image a HTMLImageElement instance or an URL of a image
    */
-  public transform(image: string | HTMLImageElement) {
+  public convert(image: string | HTMLImageElement): Promise<string> {
     let _image;
     if (image instanceof HTMLImageElement) {
       _image = image;
@@ -43,51 +43,49 @@ export class ImageToAsciiArt {
       _image.src = image;
     }
 
-    return new Promise((resolve, reject) => {
-      let doTransform = () => {
-        _image.removeEventListener('load', doTransform);
+    return new Promise((resolve): void => {
+      let doConvert = (): void => {
+        _image.removeEventListener('load', doConvert);
 
-        // TODO:delete
-        // this.canvas.width = 50;
-        // this.canvas.height = 50;
-        // this.canvasCtx.drawImage(_image, 0, 0, 50,50);
-        // const imageData = this.canvasCtx.getImageData(0, 0, 50, 50);
+        let drawWidth = this.config.drawWidth <= 1 ? this.config.drawWidth * _image.naturalWidth : this.config.drawWidth;
+        let drawHeight = this.config.drawHeight <= 1 ? this.config.drawHeight * _image.naturalHeight : this.config.drawHeight;
 
+        if (!this.canvasIsStable) {
+          this.canvas.width = drawWidth;
+          this.canvas.height = drawHeight;
+        }
 
-        this.canvas.width = _image.naturalWidth;
-        this.canvas.height = _image.naturalHeight;
-
-        this.canvasCtx.drawImage(_image, 0, 0, _image.naturalWidth, _image.naturalHeight);
-        const imageData = this.canvasCtx.getImageData(0, 0, _image.naturalWidth, _image.naturalHeight);
+        this.canvasCtx.drawImage(_image, 0, 0, drawWidth, drawHeight);
+        const imageData = this.canvasCtx.getImageData(0, 0, drawWidth, drawHeight);
         const imageDataArr = imageData.data;
         const imageDataHeight = imageData.height;
         const imageDataWidth = imageData.width;
-        console.log(imageData.width, imageData.height);
 
-        let result = '';
-        for (let h = 0; h < imageDataHeight; h += 1) {
-          for (let w = 0; w < imageDataWidth; w += 1) {
+        let arrGray = [];
+        for (let h = 0; h < imageDataHeight; h += this.config.pickDensityHorizontal) {
+          for (let w = 0; w < imageDataWidth; w += this.config.pickDensityVertical) {
             let index = (w + imageDataWidth * h) * 4;
-            let r = imageDataArr[index + 0];
+            let r = imageDataArr[index];
             let g = imageDataArr[index + 1];
             let b = imageDataArr[index + 2];
-            let gray = rgbToGray(r, g, b);
-            result += grayToAsciiChar(gray);
+            arrGray.push(rgbToGray(r, g, b));
           }
-          result += '\r\n';
+          // -1 stands for '\r\n'
+          arrGray.push(-1);
         }
-        resolve(result);
-      }
+
+        resolve(grayToAsciiString(arrGray, [...this.config.greyRangeChar, { from: -1, to: -1, char: '\r\n' }]));
+      };
 
       if (!_image.complete) {
-        _image.addEventListener('load', doTransform);
+        _image.addEventListener('load', doConvert);
       } else {
-        doTransform();
+        doConvert();
       }
     });
   }
 
-  public destroy() {
+  public destroy(): void {
     if (!this.canvasIsStable) {
       document.body.removeChild(this.canvas);
     }

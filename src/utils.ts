@@ -1,26 +1,23 @@
-import { GreyRangeChar } from './model.js';
+import { GreyRangeChar } from './model';
 
-export function rgbToGray(r: number, g: number, b: number): number {
-  return 0.299 * r + 0.587 * g + 0.114 * b;
+export function isDef(val): boolean {
+  return val !== undefined && val !== null;
 }
 
-export function grayToAsciiChar(gray: number, greyRangeChar: GreyRangeChar[], defaultChar: string): string {
-  if (gray <= 30) {
-    return '#';
-  } else if (gray > 30 && gray <= 60) {
-    return '&';
-  } else if (gray > 60 && gray <= 120) {
-    return '$';
-  } else if (gray > 120 && gray <= 150) {
-    return '*';
-  } else if (gray > 150 && gray <= 180) {
-    return 'o';
-  } else if (gray > 180 && gray <= 210) {
-    return '!';
-  } else if (gray > 210 && gray <= 240) {
-    return ';';
-  } else {
-    return ' ';
+export function rgbToGray(r: number, g: number, b: number): number {
+  return Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+}
+
+export function grayToAsciiString(gray: number[], greyRangeChar: GreyRangeChar[], defaultChar: string = ' '): string {
+  const greyCharHash = {};
+  for (let i = 0; i < greyRangeChar.length; i++) {
+    const item = greyRangeChar[i];
+    for (let j = item.from; j <= item.to; j++) {
+      greyCharHash[j] = item.char;
+    }
   }
+  return gray.map((item): string => {
+    return greyCharHash[item] || defaultChar;
+  }).join('');
 }
 

@@ -1,8 +1,8 @@
 {
   "name": "image-to-ascii-art",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/image-to-ascii-art.js",
   "scripts": {
     "dev": "webpack --config ./build/webpack.config.dev.js",
     "build": "webpack --config ./build/webpack.config.prod.js",
@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/wangpengfeido/image-to-ascii-art.git"
   },
-  "author": "",
+  "author": "wangpengfeido@126.com",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/wangpengfeido/image-to-ascii-art/issues"
