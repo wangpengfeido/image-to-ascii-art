@@ -76,14 +76,18 @@ export class Config implements ConfigInterface {
     if (!isDef(param)) {
       return defaultValue;
     }
+    const result=[];
     for (let i = 0; i < param.length; i++) {
-      param[i].from = Math.floor(param[i].from);
-      param[i].to = Math.floor(param[i].to);
       if (param[i].from > param[i].to) {
         throw new Error(err);
       }
+      result.push({
+        from:Math.floor(param[i].from),
+        to:Math.floor(param[i].to),
+        char:param[i].char
+      })
     }
-    return defaultValue;
+    return result;
   }
 }
 

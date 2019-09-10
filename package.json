@@ -1,6 +1,6 @@
 {
   "name": "image-to-ascii-art",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "convert image to ascii art in browser",
   "main": "dist/image-to-ascii-art.js",
   "scripts": {
